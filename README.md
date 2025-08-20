@@ -2,8 +2,6 @@
 
 A podcast search and player application built with modern React.
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/snipsnop-r)
-
 ## Modern React Updates Applied
 
 This project has been modernized to use current React best practices:
