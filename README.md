@@ -2,8 +2,6 @@
 
 A podcast search and player application built with modern React.
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/snipsnop-r)
-
 ## Modern React Updates Applied
 
 This project has been modernized to use current React best practices:
@@ -40,5 +38,3 @@ This project has been modernized to use current React best practices:
 npm install
 npm start
 ```
-
-The project now builds successfully and follows modern React best practices!
