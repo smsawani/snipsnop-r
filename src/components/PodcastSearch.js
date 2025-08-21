@@ -41,7 +41,6 @@ const PodcastSearch = () => {
   return (
     <div className="podcast-search-container">  
       <div className="app-header">
-        <h1>SnipSnop</h1>
         <Link to="/snips" className="button fancy-button">
           My Snips
         </Link>
