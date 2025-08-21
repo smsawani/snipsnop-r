@@ -33,19 +33,13 @@ const EpisodeSelect = () => {
   }, [collectionId]);
 
   return (      
-    <div className="container"> 
-      <div className="row">
-        <div className="col">  
-          <h1>{collectionName}</h1>
-          <h2>{artistName}</h2>
-          <h2>{collectionId}</h2>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col"><hr/></div>
+    <div className="episodes-page-container"> 
+      <div className="episodes-header">
+        <h1>{collectionName}</h1>
+        <h2>{artistName}</h2>
       </div>
 
-      <div>
+      <div className="episodes-list">
         {episodes.slice(1).map((episode) => (
           <Episode
             collectionName={episode.collectionName}

@@ -36,7 +36,6 @@ const Episode = ({
           <p className="episode-description">{description}</p>
         </div>
       </div>
-      <hr className="episode-divider" />
     </div>
   );
 };
