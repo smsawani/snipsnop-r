@@ -10,34 +10,16 @@ const Podcast = ({ collectionId, collectionName, artworkUrl, artistName }) => {
   };
 
   return (
-    <div className="containerBlock">  
-      <div className="row">
-        <div className="col">
-          <Link to={`/episodes/${collectionId}`} state={podcastState}>
-            <img className="podcastImage" src={artworkUrl} alt={collectionName} />
-          </Link>
+    <div className="podcast-card">  
+      <Link to={`/episodes/${collectionId}`} state={podcastState} className="podcast-link">
+        <div className="podcast-image-wrapper">
+          <img className="podcastImage" src={artworkUrl} alt={collectionName} />
         </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <Link to={`/episodes/${collectionId}`} state={podcastState}>
-            <h3>{collectionName}</h3>
-          </Link>
+        <div className="podcast-info">
+          <h3 className="podcast-title">{collectionName}</h3>
+          <p className="podcast-artist">{artistName}</p>
         </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <h4>{artistName}</h4>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <h4>{collectionId}</h4>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col"><hr/></div>
-      </div> 
+      </Link>
     </div>
   );
 };

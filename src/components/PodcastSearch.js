@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../style.css';
 import Podcast from './Podcast';
 
@@ -38,24 +39,40 @@ const PodcastSearch = () => {
   };
 
   return (
-    <div className="container">  
-      <form onSubmit={handleSubmit}>
-        <br/>
-        <div>        
-          <label htmlFor="name">podcast search</label>
-          <input 
-            id="name" 
-            type="text" 
-            value={searchTerm} 
-            onChange={handleChange} 
-          />
-        </div>
-        <button className="button" type="submit">Search</button>
-      </form>
-      <p>{error}</p>
-      <p><b>{resultCount} results found</b></p>     
+    <div className="podcast-search-container">  
+      <div className="app-header">
+        <h1>SnipSnop</h1>
+        <Link to="/snips" className="button fancy-button">
+          My Snips
+        </Link>
+      </div>
 
-      <div>
+      <div className="search-form-wrapper">
+        <form onSubmit={handleSubmit} className="search-form">
+          <div className="search-input-group">        
+            <label htmlFor="name">Podcast Search</label>
+            <input 
+              id="name" 
+              type="text" 
+              value={searchTerm} 
+              onChange={handleChange}
+              placeholder="Enter podcast name..."
+              className="search-input"
+            />
+          </div>
+          <button className="button search-button" type="submit">Search</button>
+        </form>
+        
+        {error && <div className="error-message">{error}</div>}
+        
+        {resultCount > 0 && (
+          <div className="results-summary">
+            <span className="results-count">{resultCount}</span> podcast{resultCount !== '1' ? 's' : ''} found
+          </div>
+        )}
+      </div>
+
+      <div className="podcasts-grid">
         {podcasts.map((podcast) => (
           <Podcast
             collectionName={podcast.collectionName}

@@ -21,41 +21,22 @@ const Episode = ({
   };
 
   return (
-    <div className="container">  
-      <div className="row" style={{ display: 'flex' }}>
-        <div className="col">
+    <div className="episode-container">  
+      <div className="episode-content">
+        <div className="episode-image-wrapper">
           <Link to={`/snipdefine/${trackId}`} state={episodeState}>
             <img className="episodeImage" src={artworkUrl} alt={trackName} />
           </Link>
         </div>
-        <div className="col">
-          <div className="row">
-            <div className="col">
-              <Link to={`/snipdefine/${trackId}`} state={episodeState}>
-                <h3>{trackName}</h3>
-              </Link>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <h4>{releaseDate}</h4>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <h4>{trackId}</h4>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <h4>{description}</h4>
-            </div>
-          </div>
+        <div className="episode-details">
+          <Link to={`/snipdefine/${trackId}`} state={episodeState} className="episode-title-link">
+            <h3 className="episode-title">{trackName}</h3>
+          </Link>
+          <p className="episode-date">{releaseDate}</p>
+          <p className="episode-description">{description}</p>
         </div>
       </div>
-      <div className="row">
-        <div className="col"><hr/></div>
-      </div> 
+      <hr className="episode-divider" />
     </div>
   );
 };
