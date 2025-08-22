@@ -1,5 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import snipService from '../services/snipService';
 import '../style.css';
 
 const SnipDefine = () => {
@@ -18,21 +19,24 @@ const SnipDefine = () => {
   const [endTime, setEndTime] = useState('');
   const [isSaved, setIsSaved] = useState(false);
 
-  // Load saved times from localStorage on component mount
+  // Load saved times from Redis on component mount
   useEffect(() => {
-    if (trackId) {
-      const savedData = localStorage.getItem(`snip_${trackId}`);
-      if (savedData) {
+    const loadSavedSnip = async () => {
+      if (trackId) {
         try {
-          const { startTime: savedStart, endTime: savedEnd } = JSON.parse(savedData);
-          setStartTime(savedStart || '');
-          setEndTime(savedEnd || '');
-          setIsSaved(!!(savedStart || savedEnd));
+          const savedData = await snipService.getSnip(trackId);
+          if (savedData) {
+            setStartTime(savedData.startTime || '');
+            setEndTime(savedData.endTime || '');
+            setIsSaved(!!(savedData.startTime || savedData.endTime));
+          }
         } catch (error) {
           console.error('Error loading saved snip data:', error);
         }
       }
-    }
+    };
+    
+    loadSavedSnip();
   }, [trackId]);
 
   const handleStartTimeChange = (event) => {
@@ -45,17 +49,21 @@ const SnipDefine = () => {
     setIsSaved(false);
   };
 
-  // Save times to localStorage
-  const handleSave = () => {
+  // Save times to Redis
+  const handleSave = async () => {
     if (trackId && (startTime || endTime)) {
-      const snipData = {
-        startTime,
-        endTime,
-        episodeData,
-        lastModified: new Date().toISOString()
-      };
-      localStorage.setItem(`snip_${trackId}`, JSON.stringify(snipData));
-      setIsSaved(true);
+      try {
+        const snipData = {
+          startTime,
+          endTime,
+          episodeData
+        };
+        await snipService.saveSnip(trackId, snipData);
+        setIsSaved(true);
+      } catch (error) {
+        console.error('Error saving snip:', error);
+        alert('Failed to save snip. Please try again.');
+      }
     }
   };
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import snipService from '../services/snipService';
 import '../style.css';
 
 const SnipList = () => {
@@ -13,39 +14,25 @@ const SnipList = () => {
     loadSnips();
   }, []);
 
-  const loadSnips = () => {
-    const snipItems = [];
-    
-    // Iterate through all localStorage items
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      
-      // Only process keys that start with 'snip_'
-      if (key && key.startsWith('snip_')) {
-        try {
-          const data = JSON.parse(localStorage.getItem(key));
-          const trackId = key.replace('snip_', '');
-          
-          snipItems.push({
-            trackId,
-            ...data,
-            storageKey: key
-          });
-        } catch (error) {
-          console.error(`Error parsing snip data for ${key}:`, error);
-        }
-      }
+  const loadSnips = async () => {
+    try {
+      const snipItems = await snipService.getAllSnips();
+      setSnips(snipItems);
+    } catch (error) {
+      console.error('Error loading snips:', error);
+      setSnips([]);
     }
-    
-    // Sort by lastModified date (most recent first)
-    snipItems.sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified));
-    setSnips(snipItems);
   };
 
-  const deleteSnip = (storageKey) => {
+  const deleteSnip = async (trackId) => {
     if (window.confirm('Are you sure you want to delete this snip?')) {
-      localStorage.removeItem(storageKey);
-      loadSnips(); // Reload the list
+      try {
+        await snipService.deleteSnip(trackId);
+        loadSnips(); // Reload the list
+      } catch (error) {
+        console.error('Error deleting snip:', error);
+        alert('Failed to delete snip. Please try again.');
+      }
     }
   };
 
@@ -276,7 +263,7 @@ const SnipList = () => {
                 </Link>
                 <button 
                   className="button snip-delete-button"
-                  onClick={() => deleteSnip(snip.storageKey)}
+                  onClick={() => deleteSnip(snip.trackId)}
                 >
                   Delete
                 </button>
